@@ -5,30 +5,42 @@ struct ContentView: View {
     @StateObject private var locationManager = LocationManager()
     @StateObject var stepviewmodel = StepsViewModel()
     @StateObject var pointsViewModel = PointsViewModel()
-
+    
     var body: some View {
         NavigationView{
             VStack {
-                    // Display the weather information
-                    if let weather = weatherviewModel.currentWeather {
-                        Text("Temperature: \(weather.temperature, specifier: "%.1f")°C")
-                        Text("Condition: \(weather.condition)")
-                    } else {
-                        Text("No weather data available")
-                    }
-                        NavigationLink(destination: detailview()){
-                            Text("view details")
-                        }
-                    
-                    Text("steps: \(stepviewmodel.steps)")
+                    Text("Welcome to StepCount")
+                                .font(.title)
+                                .padding()
+
                     // Display the points information
-                    Text("Points: \(pointsViewModel.points)")
-                    
+                    Text("Your Points: \(pointsViewModel.points)")
                     Button(action: {
                         pointsViewModel.resetPoints()
                     }) {
                         Text("Reset Points")
                     }
+                    // Display the weather information
+                    
+                if let weather = weatherviewModel.currentWeather {
+                        Text("Temperature: \(weather.temperature, specifier: "%.1f")°C")
+                        HStack {
+                            Text("Condition: \(weather.condition)")
+                            AsyncImage(url: URL(string: "https://openweathermap.org/img/wn/\(weather.icon)@2x.png")) { image in
+                                image.resizable()
+                            } placeholder: {
+                                ProgressView()
+                            }
+                            .frame(width: 50, height: 50)
+                    }
+                } else {
+                    Text("No weather data available")
+                }
+
+
+                        NavigationLink(destination: detailview()){
+                            Text("view details")
+                        }
             }
         
         }
@@ -64,8 +76,16 @@ struct detailview: View {
                     Text("Feels like \(weather.feels_like, specifier: "%.1f")°C")
                     Text("Humidity: \(weather.humidity)%")
                     Text("Wind speed: \(weather.windSpeed)mph")
-                    Text("Visibility: \(weather.visibility)metres")
-                    Text("Condition: \(weather.condition)")
+                    Text("Visibility: \(weather.visibility) metres")
+                    HStack {
+                        Text("Condition: \(weather.condition)")
+                        AsyncImage(url: URL(string: "https://openweathermap.org/img/wn/\(weather.icon)@2x.png")) { image in
+                            image.resizable()
+                        } placeholder: {
+                            ProgressView()
+                        }
+                        .frame(width: 50, height: 50)
+                    }
                     
                 } else {
                     Text("No weather data available")
@@ -115,8 +135,16 @@ struct otherlocationview: View {
                     Text("Feels like \(weather.feels_like, specifier: "%.1f")°C")
                     Text("Humidity: \(weather.humidity)%")
                     Text("Wind speed: \(weather.windSpeed)mph")
-                    Text("Visibility: \(weather.visibility)metres")
-                    Text("Condition: \(weather.condition)")
+                    Text("Visibility: \(weather.visibility) metres")
+                    HStack {
+                        Text("Condition: \(weather.condition)")
+                        AsyncImage(url: URL(string: "https://openweathermap.org/img/wn/\(weather.icon)@2x.png")) { image in
+                            image.resizable()
+                        } placeholder: {
+                            ProgressView()
+                        }
+                        .frame(width: 50, height: 50)
+                    }
                 } else {
                     Text("No weather data available")
                 }

@@ -10,13 +10,14 @@ struct Weather{
     let humidity: Int
     let feels_like: Double
     let visibility: Int
-
+    let icon: String
 }
 
 // Define a service to fetch the weather data
 class WeatherService {
     private let apiKey = "35e57bc8efeff5e8c2a253b80196d678"
     
+    //produce by microsoft copilot
     func fetchCurrentWeather(longitude: Double, latitude: Double) -> AnyPublisher<Weather, Error> {
         let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=\(apiKey)&units=metric")!
         
@@ -31,11 +32,13 @@ class WeatherService {
                     windSpeed: response.wind.speed,
                     humidity: response.main.humidity,
                     feels_like: response.main.feels_like,
-                    visibility: response.visibility
+                    visibility: response.visibility,
+                    icon: response.weather[0].icon
                 )
             }
             .eraseToAnyPublisher()
     }
+    
     func fetchCurrentWeatherByName(location: String) -> AnyPublisher<Weather, Error> {
         let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(location)&appid=\(apiKey)&units=metric")!
         
@@ -50,7 +53,8 @@ class WeatherService {
                     windSpeed: response.wind.speed,
                     humidity: response.main.humidity,
                     feels_like: response.main.feels_like,
-                    visibility: response.visibility
+                    visibility: response.visibility,
+                    icon: response.weather[0].icon
                     
                 )
             }
@@ -70,6 +74,7 @@ struct OpenWeatherMapResponse: Codable {
     struct Weather: Codable {
         let main: String
         let description: String
+        let icon: String
     }
     
     struct Wind: Codable {

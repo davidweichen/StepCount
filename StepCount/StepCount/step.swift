@@ -2,6 +2,7 @@ import Foundation
 import Combine
 import HealthKit
 
+//work with microsoft copilot
 class StepsViewModel: ObservableObject {
     private var healthStore: HKHealthStore?
     private var query: HKAnchoredObjectQuery?
@@ -24,32 +25,40 @@ class StepsViewModel: ObservableObject {
             }
         }
     }
-
+    
     func fetchSteps() {
         let type = HKObjectType.quantityType(forIdentifier: .stepCount)!
-        let predicate = HKQuery.predicateForSamples(withStart: Date.distantPast, end: Date(), options: .strictStartDate)
+        var startDate = Date().addingTimeInterval(-10) //10 seconds ago
+        let timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { [self] timer in
+            let endDate = Date() // Current time
+            let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictStartDate)
+            // Execute the query with the updated predicate
+            self.query = HKAnchoredObjectQuery(type: type, predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit) { _, samples, _, _, error in
+                if let error = error {
+                    print("Error: \(error.localizedDescription)")
+                    return
+                }
 
-        query = HKAnchoredObjectQuery(type: type, predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit) { _, samples, _, _, error in
-            if let error = error {
-                print("Error: \(error.localizedDescription)")
-                return
+                self.updateSteps(samples: samples)
             }
 
-            self.updateSteps(samples: samples)
-        }
+            self.query?.updateHandler = { _, samples, _, _, error in
+                if let error = error {
+                    print("Error: \(error.localizedDescription)")
+                    return
+                }
 
-        query?.updateHandler = { _, samples, _, _, error in
-            if let error = error {
-                print("Error: \(error.localizedDescription)")
-                return
+                self.updateSteps(samples: samples)
             }
 
-            self.updateSteps(samples: samples)
+            if let query = self.query {
+                healthStore?.execute(query)
+            }
+            startDate = endDate // Update the startDate for the next interval
         }
 
-        if let query = query {
-            healthStore?.execute(query)
-        }
+
+        
     }
 
 
@@ -77,17 +86,17 @@ class PointsViewModel: ObservableObject {
         // Load the stored points from UserDefaults
         self.points = UserDefaults.standard.double(forKey: "Points")
     }
-    
+    //work with microsoft copilot
     func setup(stepsViewModel: StepsViewModel, weatherViewModel: WeatherViewModel) {
-        // Combine the latest values of steps and currentWeather
-        Publishers.CombineLatest(stepsViewModel.$steps, weatherViewModel.$currentWeather)
+        // Subscribe to steps publisher
+        stepsViewModel.$steps
             // Ensure the sink closure is run on the main thread
             .receive(on: DispatchQueue.main)
             // Subscribe to the publisher
-            .sink { steps, weather in
+            .sink { steps in
                 // Determine the multiplier based on the weather condition
                 let multiplier: Double
-                if let weather = weather, ["Rain", "Snow"].contains(weather.main) {
+                if let weather = weatherViewModel.currentWeather, ["Rain", "Snow"].contains(weather.main) {
                     multiplier = 1.5
                 } else {
                     multiplier = 1.0
@@ -98,6 +107,7 @@ class PointsViewModel: ObservableObject {
             // Store the cancellable in the set of cancellables for future cancellation if needed
             .store(in: &cancellables)
     }
+
     
     // Function to reset the points to zero
     func resetPoints() {
