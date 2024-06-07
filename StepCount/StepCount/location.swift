@@ -1,12 +1,20 @@
 import Foundation
 import CoreLocation
+import Combine
 //Code from https://medium.com/@desilio/getting-user-location-with-swiftui-1f79d23c2321
 final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     
     @Published var lastKnownLocation: CLLocationCoordinate2D?
     var manager = CLLocationManager()
-    
-    
+    @Published var locationStatus: CLAuthorizationStatus?
+    @Published var lastLocation: CLLocation?
+    @Published var locationName: String? {
+            didSet {
+                cityNameChanged?()
+            }
+        }
+        
+    var cityNameChanged: (() -> Void)?
     func checkLocationAuthorization() {
         
         manager.delegate = self
@@ -34,12 +42,42 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
         
         }
     }
-    
+    func fetchCityName() {
+            guard let location = lastKnownLocation else {
+                print("Location not available")
+                return
+            }
+            
+            let geocoder = CLGeocoder()
+            let locationToGeocode = CLLocation(latitude: location.latitude, longitude: location.longitude)
+            
+            geocoder.reverseGeocodeLocation(locationToGeocode) { placemarks, error in
+                guard error == nil else {
+                    print("Reverse geocoding error: \(error!.localizedDescription)")
+                    return
+                }
+                
+                guard let placemark = placemarks?.first else {
+                    print("No placemarks found")
+                    return
+                }
+                
+                if let city = placemark.locality {
+                    self.locationName = city
+                } else {
+                    print("City name not found")
+                }
+            }
+        }
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {//Trigged every time authorization status changes
         checkLocationAuthorization()
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         lastKnownLocation = locations.first?.coordinate
+        fetchCityName()
     }
+    
+
+
 }

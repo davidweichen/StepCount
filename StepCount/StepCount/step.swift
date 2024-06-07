@@ -29,7 +29,7 @@ class StepsViewModel: ObservableObject {
     func fetchSteps() {
         let type = HKObjectType.quantityType(forIdentifier: .stepCount)!
         var startDate = Date().addingTimeInterval(-10) //10 seconds ago
-        let timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { [self] timer in
+        Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { [self] timer in
             let endDate = Date() // Current time
             let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictStartDate)
             // Execute the query with the updated predicate
@@ -113,5 +113,6 @@ class PointsViewModel: ObservableObject {
     func resetPoints() {
         self.points = 0
     }
+    
 }
 

@@ -18,27 +18,6 @@ class WeatherService {
     private let apiKey = "35e57bc8efeff5e8c2a253b80196d678"
     
     //produce by microsoft copilot
-    func fetchCurrentWeather(longitude: Double, latitude: Double) -> AnyPublisher<Weather, Error> {
-        let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=\(apiKey)&units=metric")!
-        
-        return URLSession.shared.dataTaskPublisher(for: url)
-            .map { $0.data }
-            .decode(type: OpenWeatherMapResponse.self, decoder: JSONDecoder())
-            .map { response in
-                Weather(
-                    main: response.weather[0].main,
-                    temperature: response.main.temp,
-                    condition: response.weather[0].description.capitalized,
-                    windSpeed: response.wind.speed,
-                    humidity: response.main.humidity,
-                    feels_like: response.main.feels_like,
-                    visibility: response.visibility,
-                    icon: response.weather[0].icon
-                )
-            }
-            .eraseToAnyPublisher()
-    }
-    
     func fetchCurrentWeatherByName(location: String) -> AnyPublisher<Weather, Error> {
         let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(location)&appid=\(apiKey)&units=metric")!
         
@@ -95,18 +74,10 @@ class WeatherViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     private let weatherService: WeatherService
 
+
     init(weatherService: WeatherService = WeatherService()) {
         self.weatherService = weatherService
-    }
-
-    func fetchWeather(longitude: Double, latitude: Double) {
-        weatherService.fetchCurrentWeather(longitude: longitude, latitude: latitude)
-            .sink(receiveCompletion: { _ in },
-                  receiveValue: { [weak self] weather in
-                    self?.currentWeather = weather
-                  })
-            .store(in: &cancellables)
-    }
+      }
     func fetchWeatherByName(location: String) {
         weatherService.fetchCurrentWeatherByName(location: location)
             .sink(receiveCompletion: { _ in },
@@ -115,7 +86,5 @@ class WeatherViewModel: ObservableObject {
                   })
             .store(in: &cancellables)
     }
-    
-
     
 }

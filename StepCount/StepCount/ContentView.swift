@@ -1,11 +1,11 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var weatherviewModel = WeatherViewModel()
+    @StateObject var weatherviewModel = WeatherViewModel(weatherService: WeatherService())
     @StateObject private var locationManager = LocationManager()
     @StateObject var stepviewmodel = StepsViewModel()
     @StateObject var pointsViewModel = PointsViewModel()
-    
+    @State private var cityName: String = "Unknown"
     var body: some View {
         NavigationView{
             VStack {
@@ -20,8 +20,9 @@ struct ContentView: View {
                     }) {
                         Text("Reset Points")
                     }
+                    Text("Current City: \(cityName)")
+                               .padding()
                     // Display the weather information
-                    
                 if let weather = weatherviewModel.currentWeather {
                         Text("Temperature: \(weather.temperature, specifier: "%.1f")°C")
                         HStack {
@@ -47,25 +48,19 @@ struct ContentView: View {
         .padding()
         .onAppear {
             locationManager.checkLocationAuthorization()
-            fetchWeatherview()
+            locationManager.cityNameChanged = {
+                            self.cityName = self.locationManager.locationName ?? "Unknown"
+                            weatherviewModel.fetchWeatherByName(location: cityName)
+                        }
             stepviewmodel.fetchSteps()
-            fetchpoints()
+            pointsViewModel.setup(stepsViewModel: stepviewmodel, weatherViewModel: weatherviewModel)
         }
     }
-    private func fetchWeatherview() {
-        if let location = locationManager.lastKnownLocation {
-            weatherviewModel.fetchWeather(longitude: location.longitude, latitude: location.latitude)
-        }
-    }
-    private func fetchpoints(){
-        pointsViewModel.setup(stepsViewModel: stepviewmodel, weatherViewModel: weatherviewModel)
-    }
-   
-
 }
 struct detailview: View {
-    @StateObject var weatherviewModel = WeatherViewModel()
+    @StateObject var weatherviewModel = WeatherViewModel(weatherService: WeatherService())
     @StateObject private var locationManager = LocationManager()
+    @State private var cityName: String = "Unknown"
     var body: some View {
             VStack {
                 
@@ -98,19 +93,15 @@ struct detailview: View {
         .padding()
         .onAppear {
             locationManager.checkLocationAuthorization()
-            fetchWeatherview()
-
-        }
-    }
-    private func fetchWeatherview() {
-        if let location = locationManager.lastKnownLocation {
-            weatherviewModel.fetchWeather(longitude: location.longitude, latitude: location.latitude)
+            locationManager.cityNameChanged = {
+                            self.cityName = self.locationManager.locationName ?? "Unknown"
+                            weatherviewModel.fetchWeatherByName(location: cityName)
+                        }
         }
     }
 }
 struct otherlocationview: View {
-    @StateObject var weatherviewModel = WeatherViewModel()
-    @StateObject private var locationManager = LocationManager()
+    @StateObject var weatherviewModel = WeatherViewModel(weatherService: WeatherService())
     @State private var city = ""
     var body: some View {
         VStack {
