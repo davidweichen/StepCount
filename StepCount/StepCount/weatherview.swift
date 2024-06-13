@@ -15,7 +15,7 @@ struct Weather{
 
 // Define a service to fetch the weather data
 class WeatherService {
-    private let apiKey = "35e57bc8efeff5e8c2a253b80196d678"
+    private let apiKey = "YOUR_API_KEY"
     
     //produce by microsoft copilot
     func fetchCurrentWeatherByName(location: String) -> AnyPublisher<Weather, Error> {
