@@ -1,4 +1,5 @@
 import SwiftUI
+import FirebaseAuth
 
 struct ContentView: View {
     @StateObject var weatherviewModel = WeatherViewModel(weatherService: WeatherService())
@@ -6,57 +7,76 @@ struct ContentView: View {
     @StateObject var stepviewmodel = StepsViewModel()
     @StateObject var pointsViewModel = PointsViewModel()
     @State private var cityName: String = "Unknown"
-    var body: some View {
-        NavigationView{
-            VStack {
-                    Text("Welcome to StepCount")
-                                .font(.title)
-                                .padding()
+    @Binding var isAuthenticated: Bool
 
-                    // Display the points information
-                    Text("Your Points: \(pointsViewModel.points)")
-                    Button(action: {
-                        pointsViewModel.resetPoints()
-                    }) {
-                        Text("Reset Points")
-                    }
-                    Text("Current City: \(cityName)")
-                               .padding()
-                    // Display the weather information
+    var body: some View {
+        NavigationView {
+            VStack {
+                Text("Welcome to StepCount")
+                    .font(.title)
+                    .padding()
+
+                // Display the points information
+                Text("Your Points: \(pointsViewModel.points)")
+                Button(action: {
+                    pointsViewModel.resetPoints()
+                }) {
+                    Text("Reset Points")
+                }
+                Text("Current City: \(cityName)")
+                    .padding()
+                // Display the weather information
                 if let weather = weatherviewModel.currentWeather {
-                        Text("Temperature: \(weather.temperature, specifier: "%.1f")°C")
-                        HStack {
-                            Text("Condition: \(weather.condition)")
-                            AsyncImage(url: URL(string: "https://openweathermap.org/img/wn/\(weather.icon)@2x.png")) { image in
-                                image.resizable()
-                            } placeholder: {
-                                ProgressView()
-                            }
-                            .frame(width: 50, height: 50)
+                    Text("Temperature: \(weather.temperature, specifier: "%.1f")°C")
+                    HStack {
+                        Text("Condition: \(weather.condition)")
+                        AsyncImage(url: URL(string: "https://openweathermap.org/img/wn/\(weather.icon)@2x.png")) { image in
+                            image.resizable()
+                        } placeholder: {
+                            ProgressView()
+                        }
+                        .frame(width: 50, height: 50)
                     }
                 } else {
                     Text("No weather data available")
                 }
 
-
-                        NavigationLink(destination: detailview()){
-                            Text("view details")
-                        }
+                NavigationLink(destination: detailview()) {
+                    Text("view details")
+                }
             }
-        
+            .padding()
+            .onAppear {
+                locationManager.checkLocationAuthorization()
+                locationManager.cityNameChanged = {
+                    self.cityName = self.locationManager.locationName ?? "Unknown"
+                    weatherviewModel.fetchWeatherByName(location: cityName)
+                }
+                stepviewmodel.fetchSteps()
+                pointsViewModel.setup(stepsViewModel: stepviewmodel, weatherViewModel: weatherviewModel)
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        logout()
+                    }) {
+                        Text("Logout")
+                    }
+                }
+            }
         }
-        .padding()
-        .onAppear {
-            locationManager.checkLocationAuthorization()
-            locationManager.cityNameChanged = {
-                            self.cityName = self.locationManager.locationName ?? "Unknown"
-                            weatherviewModel.fetchWeatherByName(location: cityName)
-                        }
-            stepviewmodel.fetchSteps()
-            pointsViewModel.setup(stepsViewModel: stepviewmodel, weatherViewModel: weatherviewModel)
+    }
+
+    func logout() {
+        do {
+            try Auth.auth().signOut()
+            isAuthenticated = false
+        } catch let signOutError as NSError {
+            print("Error signing out: %@", signOutError)
         }
     }
 }
+
 struct detailview: View {
     @StateObject var weatherviewModel = WeatherViewModel(weatherService: WeatherService())
     @StateObject private var locationManager = LocationManager()

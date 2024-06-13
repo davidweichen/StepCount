@@ -15,10 +15,14 @@
 		EE33B8FC2BE5753F00177A9C /* StepCountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE33B8FB2BE5753F00177A9C /* StepCountTests.swift */; };
 		EE33B9062BE5753F00177A9C /* StepCountUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE33B9052BE5753F00177A9C /* StepCountUITests.swift */; };
 		EE33B9082BE5753F00177A9C /* StepCountUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE33B9072BE5753F00177A9C /* StepCountUITestsLaunchTests.swift */; };
-		EE33B9162BE60A9E00177A9C /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE33B9152BE60A9E00177A9C /* Persistence.swift */; };
 		EE33B9182BE60D2200177A9C /* weatherview.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE33B9172BE60D2200177A9C /* weatherview.swift */; };
 		EE33B91B2BE745E300177A9C /* location.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE33B91A2BE745E300177A9C /* location.swift */; };
 		EE33B91D2BE89D9300177A9C /* step.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE33B91C2BE89D9300177A9C /* step.swift */; };
+		EE33B9212C16F6F000177A9C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE33B9202C16F6F000177A9C /* GoogleService-Info.plist */; };
+		EEFF6A1E2C16FBD5003E59F1 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = EEFF6A1D2C16FBD5003E59F1 /* FirebaseAuth */; };
+		EEFF6A202C16FBD5003E59F1 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EEFF6A1F2C16FBD5003E59F1 /* FirebaseFirestoreSwift */; };
+		EEFF6A222C16FBD5003E59F1 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = EEFF6A212C16FBD5003E59F1 /* FirebaseStorage */; };
+		EEFF6A242C19A989003E59F1 /* login.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFF6A232C19A989003E59F1 /* login.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,11 +55,13 @@
 		EE33B9052BE5753F00177A9C /* StepCountUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepCountUITests.swift; sourceTree = "<group>"; };
 		EE33B9072BE5753F00177A9C /* StepCountUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepCountUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		EE33B9142BE5F29D00177A9C /* StepCount.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StepCount.entitlements; sourceTree = "<group>"; };
-		EE33B9152BE60A9E00177A9C /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Persistence.swift; path = ../../../../.Trash/Persistence.swift; sourceTree = "<group>"; };
 		EE33B9172BE60D2200177A9C /* weatherview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = weatherview.swift; sourceTree = "<group>"; };
 		EE33B9192BE7420A00177A9C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		EE33B91A2BE745E300177A9C /* location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = location.swift; sourceTree = "<group>"; };
 		EE33B91C2BE89D9300177A9C /* step.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = step.swift; sourceTree = "<group>"; };
+		EE33B91E2C16F6CB00177A9C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		EE33B9202C16F6F000177A9C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		EEFF6A232C19A989003E59F1 /* login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = login.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +69,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEFF6A1E2C16FBD5003E59F1 /* FirebaseAuth in Frameworks */,
+				EEFF6A202C16FBD5003E59F1 /* FirebaseFirestoreSwift in Frameworks */,
+				EEFF6A222C16FBD5003E59F1 /* FirebaseStorage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,7 +122,8 @@
 				EE33B8E72BE5753C00177A9C /* ContentView.swift */,
 				EE33B91A2BE745E300177A9C /* location.swift */,
 				EE33B91C2BE89D9300177A9C /* step.swift */,
-				EE33B9152BE60A9E00177A9C /* Persistence.swift */,
+				EEFF6A232C19A989003E59F1 /* login.swift */,
+				EE33B9202C16F6F000177A9C /* GoogleService-Info.plist */,
 				EE33B8E92BE5753F00177A9C /* Assets.xcassets */,
 				EE33B8F02BE5753F00177A9C /* StepCount.xcdatamodeld */,
 				EE33B8EB2BE5753F00177A9C /* Preview Content */,
@@ -140,6 +150,7 @@
 		EE33B9042BE5753F00177A9C /* StepCountUITests */ = {
 			isa = PBXGroup;
 			children = (
+				EE33B91E2C16F6CB00177A9C /* GoogleService-Info.plist */,
 				EE33B9052BE5753F00177A9C /* StepCountUITests.swift */,
 				EE33B9072BE5753F00177A9C /* StepCountUITestsLaunchTests.swift */,
 			);
@@ -162,6 +173,11 @@
 			dependencies = (
 			);
 			name = StepCount;
+			packageProductDependencies = (
+				EEFF6A1D2C16FBD5003E59F1 /* FirebaseAuth */,
+				EEFF6A1F2C16FBD5003E59F1 /* FirebaseFirestoreSwift */,
+				EEFF6A212C16FBD5003E59F1 /* FirebaseStorage */,
+			);
 			productName = StepCount;
 			productReference = EE33B8E22BE5753C00177A9C /* StepCount.app */;
 			productType = "com.apple.product-type.application";
@@ -234,6 +250,9 @@
 				Base,
 			);
 			mainGroup = EE33B8D92BE5753C00177A9C;
+			packageReferences = (
+				EE33B9222C16FB0300177A9C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = EE33B8E32BE5753C00177A9C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -251,6 +270,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE33B8ED2BE5753F00177A9C /* Preview Assets.xcassets in Resources */,
+				EE33B9212C16F6F000177A9C /* GoogleService-Info.plist in Resources */,
 				EE33B8EA2BE5753F00177A9C /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -279,9 +299,9 @@
 				EE33B91B2BE745E300177A9C /* location.swift in Sources */,
 				EE33B91D2BE89D9300177A9C /* step.swift in Sources */,
 				EE33B8E82BE5753C00177A9C /* ContentView.swift in Sources */,
-				EE33B9162BE60A9E00177A9C /* Persistence.swift in Sources */,
 				EE33B8E62BE5753C00177A9C /* StepCountApp.swift in Sources */,
 				EE33B8F22BE5753F00177A9C /* StepCount.xcdatamodeld in Sources */,
+				EEFF6A242C19A989003E59F1 /* login.swift in Sources */,
 				EE33B9182BE60D2200177A9C /* weatherview.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -624,6 +644,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		EE33B9222C16FB0300177A9C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.27.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EEFF6A1D2C16FBD5003E59F1 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EE33B9222C16FB0300177A9C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		EEFF6A1F2C16FBD5003E59F1 /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EE33B9222C16FB0300177A9C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
+		};
+		EEFF6A212C16FBD5003E59F1 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EE33B9222C16FB0300177A9C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		EE33B8F02BE5753F00177A9C /* StepCount.xcdatamodeld */ = {
